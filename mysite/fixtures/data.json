@@ -163,5 +163,30 @@
       "user": 2,
       "value": "Pineapple pizza is my favourite food."
     }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 3,
+    "fields": {
+      "title": "What is your favourite city?"
+    }
+  },
+  {
+    "model": "polls.answer",
+    "pk": 5,
+    "fields": {
+      "poll": 3,
+      "user": 1,
+      "value": "New York"
+    }
+  },
+  {
+    "model": "polls.answer",
+    "pk": 6,
+    "fields": {
+      "poll": 3,
+      "user": 2,
+      "value": "Madrid"
+    }
   }
 ]

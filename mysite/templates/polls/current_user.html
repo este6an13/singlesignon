@@ -8,10 +8,14 @@
 
     <div class="form-group">
         {{ form.as_p }}
-        <button class="w-20 btn btn-lg btn-primary disabled" type="submit">Update Profile (Intentionally not working)</button>
+        <button class="w-20 btn btn-lg btn-primary" onclick="updateProfile()">Update Profile</button>
     </div>
 
 
 </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/polls.js"></script>
 {% endblock %}

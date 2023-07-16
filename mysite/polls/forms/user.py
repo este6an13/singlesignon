@@ -24,4 +24,4 @@ class ProfileForm(forms.Form):
             form_field.type = field['type']
             self.fields[field['id']] = form_field
 
-
+        self.fields['pk'] = forms.CharField(widget=forms.HiddenInput)

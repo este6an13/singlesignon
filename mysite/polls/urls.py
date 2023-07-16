@@ -9,5 +9,6 @@ urlpatterns = [
         views.edit_answer,
         name="edit_answer",
     ),
-    path('myprofile', views.my_profile, name="my_profile")
+    path('myprofile', views.my_profile, name="my_profile"),
+    path('profile/edit', views.edit_my_profile, name="edit_my_profile")
 ]
