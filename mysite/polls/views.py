@@ -13,6 +13,7 @@ def index(request):
     context = {
         'polls': []
     }
+
     polls = models.Poll.objects.all()
     for poll in polls:
         item = {
@@ -57,23 +58,29 @@ def edit_answer(request, poll_id, answer_id):
 @login_required
 @csrf_exempt
 def edit_my_profile(request):
-    print(request)
     payload = json.loads(request.body)
     print(payload)
     pk = payload.get('pk')
     first_name = payload.get('first_name')
     last_name = payload.get('last_name')
-    job_title = payload.get('job_title')
-    location = payload.get('location')
 
-    profile = models.Profile.objects.get(pk=pk)
+    try:
+        profile = models.Profile.objects.get(user__pk=pk)
+    except models.Profile.DoesNotExist:
+        return JsonResponse({'error': 'Profile does not exist.'}, status=400)
+
     profile.user.first_name = first_name
     profile.user.last_name = last_name
-    profile.dynamic_fields['job_title'] = job_title
-    profile.dynamic_fields['location'] = location
+
+    # Iterate through payload keys and update dynamic fields accordingly
+    for key, value in payload.items():
+        if key in profile.dynamic_fields:
+            profile.dynamic_fields[key] = value
     
     # Save the user and profile objects
     profile.user.save()
     profile.save()
 
     return JsonResponse({"result": True})
+
+

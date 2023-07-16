@@ -3,22 +3,31 @@ function updateProfile() {
 
     const url = "/polls/profile/edit"
 
-    const pk = document.getElementById('id_pk').value
+        const pk = document.getElementById('id_pk').value
     const firstName = document.getElementById('id_first_name').value
     const lastName = document.getElementById('id_last_name').value
-    const jobTitle = document.getElementById('id_job_title').value
-    const location = document.getElementById('id_location').value
 
+    // Get the form element
+    const form = document.querySelector('div.form-group')
+    console.log(form)
+    // Initialize an empty object to store the form field values
+    const body = {
+        'pk': parseInt(pk),
+        'first_name': firstName,
+        'last_name': lastName,
+    }
+
+    // Loop through each form field and add its value to the body object
+    form.querySelectorAll('input, select').forEach(field => {
+        const name = field.getAttribute('name')
+        const value = field.value
+        body[name] = value
+    })
+    console.log(body)
     const fetchPromise = fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            'pk': parseInt(pk),
-            'first_name': firstName,
-            'last_name': lastName,
-            'job_title': jobTitle,
-            'location': location
-        }),
+        body: JSON.stringify(body),
     })
 
     fetchPromise
