@@ -6,9 +6,21 @@ def is_profile_complete(user):
     site = user.profile.site
     form = models.ProfileForm.objects.get(site=site)
     form_fields = form.form_fields['fields']
+
     required_fields = [field['id'] for field in form_fields if field['required']]
+
+    select_fields = [ field for field in form_fields if field['type'] == 'select' ]
+
+    options = {}
+
+    for select_field in select_fields:
+        choices = [ value[0] for value in select_field['choices'][1:] ]
+        options[select_field['id']] = choices
+
+    correct_values = all([ user.profile.dynamic_fields[k] in options[k] for k in options if k in user.profile.dynamic_fields.keys() ])
+    print(correct_values)
     is_complete = all([field in user.profile.dynamic_fields for field in required_fields])
-    return is_complete
+    return is_complete and correct_values
 
 class ProfileRedirectionMiddleware:
     def __init__(self, get_response):
@@ -32,6 +44,8 @@ class ProfileRedirectionMiddleware:
             '/polls/myprofile',
             '/accounts/logout/',
         ]
+
+        #print(is_profile_complete(current_user))
 
         if (
             current_user.is_authenticated
